@@ -28,7 +28,7 @@ export class LoginPage {
       password: this.password
     };
     
-    this.http.post('http://localhost:3000/auth/login', JSON.stringify(credentials), {headers: headers})
+    this.http.post('http://192.168.0.8:3000/auth/login', JSON.stringify(credentials), {headers: headers})
       .subscribe(res => {
         this.spotsService.init(res.json());
         this.navCtrl.setRoot(HomePage);

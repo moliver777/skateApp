@@ -4,36 +4,14 @@
       skateApp
     </ion-title>
     <ion-buttons start>
-      <button ion-button icon-only (click)="logout()"><ion-icon name="power"></ion-icon></button>
+      <button ion-button icon-only (click)="goToList()"><ion-icon name="list"></ion-icon></button>
     </ion-buttons>
     <ion-buttons end>
-      <button ion-button icon-only (click)="createSpot()"><ion-icon name="cloud-upload"></ion-icon></button>
+      <button ion-button icon-only (click)="logout()"><ion-icon name="power"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
  
 <ion-content>
- 
-  <ion-list no-lines>
- 
-    <ion-item-sliding *ngFor="let spot of spots">
- 
-      <ion-item>
- 
-        {{spot.title}}
- 
-      </ion-item>
- 
-      <ion-item-options>
-        <button ion-button icon-only color="light" (click)="updateSpot(spot)">
-          <ion-icon name="create"></ion-icon>
-        </button>
-        <button ion-button icon-only color="primary" (click)="deleteSpot(spot)">
-          <ion-icon name="checkmark"></ion-icon>
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
- 
-  </ion-list> 
- 
+	<div #map id="map"></div>
 </ion-content>

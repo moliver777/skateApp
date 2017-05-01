@@ -5,18 +5,23 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+import { GoogleMaps } from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation';
+
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
+import { ListPage } from '../pages/list/list';
 import { Spots } from '../providers/spots';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-		LoginPage,
-		SignupPage
+    LoginPage,
+    SignupPage,
+    ListPage
   ],
   imports: [
     BrowserModule,
@@ -27,14 +32,16 @@ import { Spots } from '../providers/spots';
   entryComponents: [
     MyApp,
     HomePage,
-		LoginPage,
-		SignupPage
+    LoginPage,
+    SignupPage,
+    ListPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-		Spots
+    Spots
   ]
 })
 export class AppModule {}

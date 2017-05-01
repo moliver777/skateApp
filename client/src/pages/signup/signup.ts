@@ -33,7 +33,7 @@ export class SignupPage {
       confirmPassword: this.confirmPassword
     };
     
-    this.http.post('http://localhost:3000/auth/register', JSON.stringify(user), {headers: headers})
+    this.http.post('http://192.168.0.8:3000/auth/register', JSON.stringify(user), {headers: headers})
       .subscribe(res => {
         this.spotsService.init(res.json());
         this.navCtrl.setRoot(HomePage);

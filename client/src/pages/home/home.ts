@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
+import { GoogleMap, GoogleMapsEvent, LatLng } from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation';
 
 import { LoginPage } from '../login/login';
+import { ListPage } from '../list/list';
 import { Spots } from '../../providers/spots';
 
 @Component({
@@ -10,15 +13,17 @@ import { Spots } from '../../providers/spots';
 })
 export class HomePage {
 
+  map: GoogleMap;
   spots: any;
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public spotsService: Spots) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public spotsService: Spots, public geolocation: Geolocation) {
     
   }
 
   ionViewDidLoad(){
     this.spotsService.getSpots().then((data) => {
       this.spots = data;
+      this.loadMap();
     });
   }
 
@@ -28,61 +33,40 @@ export class HomePage {
     this.navCtrl.setRoot(LoginPage);
   }
 
-  createSpot(){
-    let prompt = this.alertCtrl.create({
-      title: 'Add',
-      message: 'Name this spot',
-      inputs: [
-        {
-          name: 'title'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel'
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            this.spotsService.createSpot({title: data.title});
-          }
-        }
-      ]
-    });
-    
-    prompt.present();
+  goToList(){
+    this.navCtrl.push(ListPage);
   }
+  
+  loadMap(){
+    this.geolocation.getCurrentPosition().then((position) => {
 
-  updateSpot(spot){
-    let prompt = this.alertCtrl.create({
-      title: 'Edit',
-      message: 'Rename this spot?',
-      inputs: [
-        {
-          name: 'title'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel'
+      let location = new LatLng(position.coords.latitude, position.coords.longitude);
+
+      this.map = new GoogleMap('map', {
+        'backgroundColor': 'white',
+        'controls': {
+          'compass': true,
+          'myLocationButton': true,
+          'indoorPicker': true,
+          'zoom': true,
         },
-        {
-          text: 'Save',
-          handler: data => {
-            this.spotsService.updateSpot({
-              _id: spot._id,
-              _rev: spot._rev,
-              title: data.title
-            });
-          }
+        'gestures': {
+          'scroll': true,
+          'tilt': true,
+          'rotate': true,
+          'zoom': true
+        },
+        'camera': {
+          'latLng': location,
+          'tilt': 30,
+          'zoom': 20,
+          'bearing': 50
         }
-      ]
-    });
-    
-    prompt.present();
-  }
+      });
 
-  deleteSpot(spot){
-    this.spotsService.deleteSpot(spot);
+      this.map.on(GoogleMapsEvent.MAP_READY).subscribe(() => {
+        console.log('Map is ready!');
+      });
+    });
   }
 }
